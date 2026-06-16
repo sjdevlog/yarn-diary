@@ -256,6 +256,27 @@ main { padding: 16px 20px 40px; }
 }
 .card h3 { font-family: var(--font-display); font-size: 19px; margin: 0 0 4px; }
 .card .meta { font-size: 13px; color: var(--text-muted); margin: 2px 0; }
+
+/* === 카드 미리보기 (목록에서, 누르면 상세로 이동) === */
+.card-preview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+  transition: transform .1s;
+}
+.card-preview:hover { background: var(--surface-alt); }
+.card-preview:active { transform: scale(0.99); }
+.card-preview-main { flex: 1; min-width: 0; }
+.card-row-status { font-size: 13px; color: var(--primary); font-weight: 700; margin: 6px 0 0; }
+.card-preview .progress-bar.mini { margin-top: 8px; }
+.card-chevron {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: var(--text-muted);
+}
 .card .notes { font-size: 13.5px; margin-top: 8px; white-space: pre-wrap; }
 .card .pattern-link {
   display: inline-block;

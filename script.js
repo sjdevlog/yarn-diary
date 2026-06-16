@@ -114,6 +114,12 @@ const projectForm = document.getElementById('project-form');
 const showProjectFormBtn = document.getElementById('show-project-form');
 const cancelProjectFormBtn = document.getElementById('cancel-project-form');
 const projectList = document.getElementById('project-list');
+const backToProjectsBtn = document.getElementById('back-to-projects');
+const projectDetailTitle = document.getElementById('project-detail-title');
+const projectDetailContent = document.getElementById('project-detail-content');
+
+// 지금 상세 화면에 열려있는 프로젝트의 id
+let currentProjectId = null;
 
 showProjectFormBtn.addEventListener('click', () => {
   showPanel('new-project');
@@ -121,6 +127,11 @@ showProjectFormBtn.addEventListener('click', () => {
 
 cancelProjectFormBtn.addEventListener('click', () => {
   projectForm.reset();
+  showPanel('progress');
+});
+
+backToProjectsBtn.addEventListener('click', () => {
+  currentProjectId = null;
   showPanel('progress');
 });
 
@@ -187,6 +198,7 @@ function formatTime(totalSeconds) {
   return `${pad(h)}:${pad(m)}:${pad(s)}`;
 }
 
+// 목록에는 미리보기만 보여준다. 누르면 상세 화면으로 넘어간다.
 function renderProjects() {
   if (state.projects.length === 0) {
     projectList.innerHTML = `
@@ -202,8 +214,54 @@ function renderProjects() {
     const pct = hasTarget ? Math.min(100, Math.round((p.currentRow / p.targetRow) * 100)) : 0;
 
     return `
+    <div class="card card-preview" data-id="${p.id}">
+      <div class="card-preview-main">
+        <h3>${escapeHtml(p.name)}</h3>
+        <p class="meta">
+          ${p.yarn ? `실: ${escapeHtml(p.yarn)}` : ''}
+          ${p.yarn && p.needle ? ' · ' : ''}
+          ${p.needle ? `바늘: ${escapeHtml(p.needle)}` : ''}
+        </p>
+        <p class="card-row-status">
+          ${p.currentRow}${hasTarget ? ` / ${p.targetRow}` : ''}단
+          ${p.timerStartedAt ? ' · 타이머 진행 중' : ''}
+        </p>
+        ${hasTarget ? `
+          <div class="progress-bar mini">
+            <div class="progress-fill" style="width:${pct}%"></div>
+          </div>
+        ` : ''}
+      </div>
+      <svg class="card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+    </div>
+  `;
+  }).join('');
+}
+
+// 미리보기 카드를 클릭하면 해당 프로젝트의 상세 화면을 연다
+projectList.addEventListener('click', (e) => {
+  const card = e.target.closest('.card-preview');
+  if (!card) return;
+  openProjectDetail(card.dataset.id);
+});
+
+function openProjectDetail(id) {
+  currentProjectId = id;
+  renderProjectDetail();
+  showPanel('project-detail');
+}
+
+// 실/도안 정보, 단수 카운터, 타이머가 모두 들어있는 상세 화면을 그린다
+function renderProjectDetail() {
+  const p = state.projects.find((p) => p.id === currentProjectId);
+  if (!p) return;
+
+  const hasTarget = p.targetRow != null && p.targetRow > 0;
+  const pct = hasTarget ? Math.min(100, Math.round((p.currentRow / p.targetRow) * 100)) : 0;
+
+  projectDetailTitle.textContent = p.name;
+  projectDetailContent.innerHTML = `
     <div class="card">
-      <h3>${escapeHtml(p.name)}</h3>
       <p class="meta">
         ${p.yarn ? `실: ${escapeHtml(p.yarn)}` : ''}
         ${p.yarn && p.needle ? ' · ' : ''}
@@ -235,11 +293,10 @@ function renderProjects() {
       ${safeUrl(p.patternLink) ? `<a class="pattern-link" href="${safeUrl(p.patternLink)}" target="_blank" rel="noopener">도안 보기 →</a>` : ''}
     </div>
   `;
-  }).join('');
 }
 
-// 카드 안의 +/−/타이머 버튼 클릭을 처리한다 (이벤트 위임)
-projectList.addEventListener('click', (e) => {
+// 상세 화면 안의 +/−/타이머 버튼 클릭을 처리한다 (이벤트 위임)
+projectDetailContent.addEventListener('click', (e) => {
   const btn = e.target.closest('[data-action]');
   if (!btn) return;
 
@@ -262,12 +319,13 @@ projectList.addEventListener('click', (e) => {
   }
 
   saveData(STORAGE_KEYS.projects, state.projects);
+  renderProjectDetail();
   renderProjects();
 });
 
 renderProjects();
 
-// 1초마다, 켜져있는 타이머가 있으면 시간 표시만 업데이트한다
+// 1초마다, 켜져있는 타이머가 있으면 상세 화면의 시간 표시만 업데이트한다
 setInterval(() => {
   const running = state.projects.filter((p) => p.timerStartedAt);
   running.forEach((p) => {
