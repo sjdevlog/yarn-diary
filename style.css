@@ -1,0 +1,225 @@
+/* === 폰트 & 디자인 토큰 === */
+@import url('https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Gowun+Dodum&display=swap');
+
+:root {
+  --bg: #EAF7EC;
+  --surface: #FFFFFF;
+  --surface-alt: #DCEFD8;
+  --text: #3E5C42;
+  --text-muted: #93AE8E;
+  --primary: #5FA85A;
+  --primary-soft: #D7EFCB;
+  --pink: #F2A8C0;
+  --pink-soft: #FBE3EC;
+  --yellow: #F6DD8C;
+  --yellow-soft: #FCF4D6;
+  --purple: #C7AEE6;
+  --purple-soft: #ECE2F7;
+  --orange: #F3B583;
+  --orange-soft: #FCE9D9;
+  --sky: #7FC8E8;
+  --sky-soft: #E1F3FA;
+  --border: #D9EAD3;
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 8px;
+  --font-display: 'Gaegu', sans-serif;
+  --font-body: 'Gowun Dodum', sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: linear-gradient(180deg, var(--sky-soft) 0%, var(--bg) 280px, var(--bg) 100%);
+  color: var(--text);
+  font-family: var(--font-body);
+}
+
+.app {
+  position: relative;
+  max-width: 680px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+/* === 헤더 === */
+.header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 24px 20px 8px;
+}
+.header-icon {
+  width: 48px;
+  height: 48px;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+.header-icon svg { width: 100%; height: 100%; }
+.title {
+  font-family: var(--font-display);
+  font-size: 30px;
+  margin: 0;
+  color: var(--primary);
+}
+.subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 2px 0 0;
+}
+
+.star-field {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 150px;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.falling-star {
+  position: absolute;
+  top: -16px;
+  fill: currentColor;
+  animation: star-fall linear infinite;
+}
+@keyframes star-fall {
+  0%   { transform: translateY(0) rotate(0deg) scale(0.7); opacity: 0; }
+  15%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translateY(170px) rotate(200deg) scale(1); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .falling-star { animation: none; opacity: 0.7; top: 20px; }
+}
+
+/* === 탭 === */
+.tabs {
+  position: sticky;
+  top: 0;
+  display: flex;
+  background: var(--bg);
+  border-bottom: 1.5px solid var(--border);
+  margin-top: 8px;
+  position: relative;
+  z-index: 10;
+}
+.tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  padding: 10px 4px 12px;
+  font-family: var(--font-display);
+  font-size: 12.5px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color .15s;
+}
+.tab svg { width: 22px; height: 22px; }
+.tab.active { color: var(--primary); }
+
+.tab-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 25%;
+  background: var(--primary);
+  border-radius: 3px;
+  transition: transform .25s ease;
+}
+
+/* === 패널 === */
+main { padding: 16px 20px 40px; }
+.panel { display: none; }
+.panel.active { display: block; }
+.panel h2 {
+  font-family: var(--font-display);
+  font-size: 21px;
+  margin: 8px 0 14px;
+}
+
+/* === 버튼 === */
+.btn {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  border-radius: 999px;
+  padding: 9px 18px;
+  cursor: pointer;
+  transition: transform .1s, background .15s;
+}
+.btn:active { transform: scale(0.97); }
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-primary:hover { background: #4d8f49; }
+.btn-ghost { background: transparent; color: var(--text); border: 1.5px solid var(--border); }
+.btn-ghost:hover { background: var(--surface-alt); }
+
+/* === 추가 폼 === */
+.add-form {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  margin: 12px 0;
+  box-shadow: 0 4px 16px rgba(62, 92, 66, 0.08);
+}
+.add-form.hidden { display: none; }
+.form-group { margin-bottom: 12px; }
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 9px 11px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text);
+  background: var(--bg);
+  box-sizing: border-box;
+}
+.form-group textarea { resize: vertical; min-height: 60px; }
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: 2px solid var(--primary-soft);
+  border-color: var(--primary);
+}
+.form-actions { display: flex; justify-content: flex-end; gap: 8px; }
+
+/* === 카드 === */
+.card-list { margin-top: 12px; }
+.card {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 16px rgba(62, 92, 66, 0.08);
+}
+.card h3 { font-family: var(--font-display); font-size: 19px; margin: 0 0 4px; }
+.card .meta { font-size: 13px; color: var(--text-muted); margin: 2px 0; }
+.card .notes { font-size: 13.5px; margin-top: 8px; white-space: pre-wrap; }
+.card .pattern-link {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 700;
+}
+.card .pattern-link:hover { text-decoration: underline; }
+.empty { text-align: center; padding: 32px 16px; color: var(--text-muted); }
+.empty p { margin: 4px 0; font-size: 13px; }

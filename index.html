@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>실타래 · 뜨개 다이어리</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="header-icon">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="22" cy="28" r="14"/>
+          <path d="M10 22c7 4 17 4 24 0M9 28c8 5 18 5 26 0M10 34c7 4 17 4 24 0"/>
+          <path d="M30 16l12-12M34 20l10 2M42 10l-2 10"/>
+        </svg>
+      </div>
+      <div>
+        <h1 class="title">실타래</h1>
+        <p class="subtitle">나의 뜨개 다이어리</p>
+      </div>
+    </header>
+
+    <div class="star-field" aria-hidden="true"></div>
+
+    <nav class="tabs">
+      <button class="tab active" data-tab="progress">
+        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="16" r="12"/><path d="M5 12c8 4 19 4 27 0M4 17c9 5 19 5 28 0M5 22c8 4 19 4 27 0"/></svg>
+        <span>진행 중</span>
+      </button>
+      <button class="tab" data-tab="gallery">
+        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="24" height="20" rx="3"/><circle cx="11" cy="13" r="2.2"/><path d="M4 22l6-6 4 4 5-6 9 9"/></svg>
+        <span>완성작</span>
+      </button>
+      <button class="tab" data-tab="wishlist">
+        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 27.5C9 22 5 18 5 13a6.2 6.2 0 0111-3.8A6.2 6.2 0 0127 13c0 5-4 9-11 14.5z"/></svg>
+        <span>다음 작품</span>
+      </button>
+      <button class="tab" data-tab="stash">
+        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13h22l-2.3 12.5a2 2 0 01-2 1.5H9.3a2 2 0 01-2-1.5L5 13z"/><path d="M11 13v-2a5 5 0 0110 0v2"/><path d="M11 18v5M16 18v5M21 18v5"/></svg>
+        <span>실·도구</span>
+      </button>
+      <div class="tab-indicator"></div>
+    </nav>
+
+    <main>
+      <section class="panel active" data-panel="progress">
+        <h2>진행 중인 프로젝트</h2>
+
+        <button class="btn btn-primary" id="show-project-form">+ 새 프로젝트</button>
+
+        <form id="project-form" class="add-form hidden">
+          <div class="form-group">
+            <label for="project-name">프로젝트 이름</label>
+            <input type="text" id="project-name" required placeholder="예: 라글란 스웨터" />
+          </div>
+          <div class="form-group">
+            <label for="project-pattern">도안 링크</label>
+            <input type="text" id="project-pattern" placeholder="https://..." />
+          </div>
+          <div class="form-group">
+            <label for="project-yarn">사용 실</label>
+            <input type="text" id="project-yarn" placeholder="예: 코나 코튼 그레이" />
+          </div>
+          <div class="form-group">
+            <label for="project-needle">바늘</label>
+            <input type="text" id="project-needle" placeholder="예: 4mm 대바늘" />
+          </div>
+          <div class="form-group">
+            <label for="project-target">목표 단수</label>
+            <input type="number" id="project-target" min="1" placeholder="예: 120" />
+          </div>
+          <div class="form-group">
+            <label for="project-notes">메모</label>
+            <textarea id="project-notes" placeholder="자유롭게 적어보세요"></textarea>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-ghost" id="cancel-project-form">취소</button>
+            <button type="submit" class="btn btn-primary">추가하기</button>
+          </div>
+        </form>
+
+        <div class="card-list" id="project-list"></div>
+      </section>
+
+      <section class="panel" data-panel="gallery">
+        <h2>완성작 갤러리</h2>
+        <p>여기에 완성한 작품들이 들어갈 거예요.</p>
+      </section>
+
+      <section class="panel" data-panel="wishlist">
+        <h2>다음 프로젝트</h2>
+        <p>여기에 위시리스트가 들어갈 거예요.</p>
+      </section>
+
+      <section class="panel" data-panel="stash">
+        <h2>실·도구 재고</h2>
+        <p>여기에 실/도구 목록이 들어갈 거예요.</p>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
