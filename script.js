@@ -101,6 +101,12 @@ function switchTab(name) {
   indicator.style.transform = `translateX(${index * 100}%)`;
 }
 
+// 하단 탭에 속하지 않는 화면(새 프로젝트 등)으로 넘어갈 때 쓴다.
+// 탭 바/인디케이터는 그대로 두고 패널만 바꾼다.
+function showPanel(name) {
+  panels.forEach((p) => p.classList.toggle('active', p.dataset.panel === name));
+}
+
 
 // ===== 진행 중인 프로젝트 =====
 
@@ -110,12 +116,12 @@ const cancelProjectFormBtn = document.getElementById('cancel-project-form');
 const projectList = document.getElementById('project-list');
 
 showProjectFormBtn.addEventListener('click', () => {
-  projectForm.classList.remove('hidden');
+  showPanel('new-project');
 });
 
 cancelProjectFormBtn.addEventListener('click', () => {
   projectForm.reset();
-  projectForm.classList.add('hidden');
+  showPanel('progress');
 });
 
 projectForm.addEventListener('submit', (e) => {
@@ -140,7 +146,7 @@ projectForm.addEventListener('submit', (e) => {
   saveData(STORAGE_KEYS.projects, state.projects);
 
   projectForm.reset();
-  projectForm.classList.add('hidden');
+  showPanel('progress');
   renderProjects();
 });
 
